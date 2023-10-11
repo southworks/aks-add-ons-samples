@@ -1,5 +1,5 @@
 locals {
-  environment  = "test"
+  environment  = var.environment
   product_area = "gaz"
   regions = {
     eastus = "eastus"

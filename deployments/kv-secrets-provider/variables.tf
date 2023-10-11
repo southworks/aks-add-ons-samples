@@ -1,3 +1,9 @@
+variable "environment" {
+  description = "The environment."
+  type        = string
+  default     = "test"
+}
+
 variable "backend_rg_name" {
   description = "The azurerm backend resource group name."
   type        = string
