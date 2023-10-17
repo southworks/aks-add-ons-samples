@@ -36,11 +36,11 @@ resource "azurerm_key_vault_access_policy" "aks_keys_secrets_get_permissions" {
   object_id    = lookup(local.aks_with_kv, each.key).kv_secrets_provider_identity_client_id
 
   key_permissions = [
-    "Get",
+    "Get", "List", "Create", "Update",
   ]
 
   secret_permissions = [
-    "Get",
+    "Get", "List", "Create", "Update",
   ]
 
   depends_on = [local.kvs, local.aks_with_kv]
