@@ -40,7 +40,7 @@ resource "azurerm_key_vault_access_policy" "aks_keys_secrets_get_permissions" {
   ]
 
   secret_permissions = [
-    "Get", "List", "Create", "Update",
+    "Get", "List", "Set",
   ]
 
   depends_on = [local.kvs, local.aks_with_kv]
