@@ -10,7 +10,7 @@ module "aks_clusters" {
   name                     = each.value.generated_names.kvsp.kubernetes_cluster[0]
   location                 = each.key
   resource_group_name      = lookup(local.main_resource_groups, each.key).name
-  dns_prefix               = null
+  dns_prefix               = each.value.generated_names.kvsp.kubernetes_cluster[0]
   sku_tier                 = local.aks_sku_tier
   secret_rotation_enabled  = true
   secret_rotation_interval = local.aks_secret_rotation_interval

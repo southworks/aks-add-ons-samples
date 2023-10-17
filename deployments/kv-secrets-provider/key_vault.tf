@@ -11,7 +11,7 @@ module "key_vaults" {
   source                      = "../../modules/key_vault/v1.0"
   name                        = each.value.generated_names.kvsp.key_vault[0]
   location                    = each.key
-  resource_group_name         = lookup(local.main_resource_groups, each.key)
+  resource_group_name         = lookup(local.main_resource_groups, each.key).name
   sku_name                    = local.kv_sku
   tenant_id                   = data.azurerm_client_config.current.tenant_id
   enabled_for_disk_encryption = true
