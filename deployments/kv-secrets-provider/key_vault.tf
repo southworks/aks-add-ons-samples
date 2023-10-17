@@ -25,7 +25,7 @@ resource "azurerm_key_vault_access_policy" "aks_keys_secrets_get_permissions" {
   for_each     = local.names
   key_vault_id = lookup(local.kvs, each.key).id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = lookup(local.aks_with_kv, each.key).kv_secrets_provider_identity_client_id
+  object_id    = lookup(local.aks_with_kv, each.key).kv_secrets_provider_identity_object_id
 
   key_permissions = [
     "Get", "List", "Create", "Update",
