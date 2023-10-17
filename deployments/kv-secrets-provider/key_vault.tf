@@ -21,14 +21,6 @@ module "key_vaults" {
   depends_on                  = [local.main_resource_groups]
 }
 
-resource "azurerm_key_vault_secret" "my_kv_secret" {
-  for_each     = local.names
-  name         = local.kv_secret_name
-  value        = local.kv_secret_value
-  key_vault_id = lookup(local.kvs, each.key).id
-  depends_on   = [local.kvs]
-}
-
 resource "azurerm_key_vault_access_policy" "aks_keys_secrets_get_permissions" {
   for_each     = local.names
   key_vault_id = lookup(local.kvs, each.key).id
@@ -44,4 +36,29 @@ resource "azurerm_key_vault_access_policy" "aks_keys_secrets_get_permissions" {
   ]
 
   depends_on = [local.kvs, local.aks_with_kv]
+}
+
+resource "azurerm_key_vault_access_policy" "app_registration_keys_secrets_get_permissions" {
+  for_each     = local.names
+  key_vault_id = lookup(local.kvs, each.key).id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
+
+  key_permissions = [
+    "Get", "List", "Create", "Update",
+  ]
+
+  secret_permissions = [
+    "Get", "List", "Set",
+  ]
+
+  depends_on = [local.kvs]
+}
+
+resource "azurerm_key_vault_secret" "my_kv_secret" {
+  for_each     = local.names
+  name         = local.kv_secret_name
+  value        = local.kv_secret_value
+  key_vault_id = lookup(local.kvs, each.key).id
+  depends_on   = [local.kvs, azurerm_key_vault_access_policy.app_registration_keys_secrets_get_permissions]
 }
