@@ -19,6 +19,20 @@ output "aks_names" {
   }
 }
 
+output "resource_groups_names" {
+  description = "Name of all the created resource groups."
+  value = {
+    for region, rg in local.main_resource_groups : region => rg.name
+  }
+}
+
+output "aks_identity_client_ids" {
+  description = "The Managed Identity Client ID of all the AKS instances."
+  value = {
+    for region, aks in local.aks_with_kv : region => aks.kv_secrets_provider_identity_client_id
+  }
+}
+
 output "regions" {
   description = "Regions where a deployment has been created."
   value = [
