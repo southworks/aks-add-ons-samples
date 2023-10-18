@@ -134,8 +134,8 @@ jobs:
         - name: Terraform output
           id: output
           run: |
-            output_json=$(terraform output -json) \
-            echo $output_json
+            terraform output -json >> tf.output.json
+            cat tf.output.json
           env:
             ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
             ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
