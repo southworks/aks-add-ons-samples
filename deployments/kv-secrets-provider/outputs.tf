@@ -1,13 +1,3 @@
-output "kv_name_east_us" {
-  description = "Name of the Key Vault deployed in East US region."
-  value       = local.kvs[local.regions.eastus].name
-}
-
-output "kv_east_us_secret_name" {
-  description = "Name of the secret created for the Key Vault deployed in East US region."
-  value       = local.kv_secret_name
-}
-
 output "kv_secrets_names_default" {
   description = "Name of all the generated secrets (default) for all the KVs."
   value = {
@@ -27,4 +17,11 @@ output "aks_names" {
   value = {
     for region, aks in local.aks_with_kv : region => aks.name
   }
+}
+
+output "regions" {
+  description = "Regions where a deployment has been created."
+  value = [
+    for key, value in local.regions : key
+  ]
 }
