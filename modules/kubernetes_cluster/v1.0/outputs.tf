@@ -3,6 +3,11 @@ output "id" {
   value       = azurerm_kubernetes_cluster.k8s_cluster.id
 }
 
+output "name" {
+  description = "The Kubernetes Managed Cluster name."
+  value       = azurerm_kubernetes_cluster.k8s_cluster.name
+}
+
 output "kubelet_identity" {
   description = "A kubelet_identity block. Contains the object_id."
   value       = azurerm_kubernetes_cluster.k8s_cluster.kubelet_identity[0]
