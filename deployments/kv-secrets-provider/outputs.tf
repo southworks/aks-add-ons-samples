@@ -1,8 +1,6 @@
-output "kv_secrets_names_default" {
-  description = "Name of all the generated secrets (default) for all the KVs."
-  value = {
-    for region, secret in azurerm_key_vault_secret.my_kv_secret : region => secret.name
-  }
+output "kv_secrets_names" {
+  description = "Name of all the generated secrets for all the KVs."
+  value       = [local.kv_secret_name]
 }
 
 output "kv_names" {
