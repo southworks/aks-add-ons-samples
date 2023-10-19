@@ -1,0 +1,33 @@
+name: Configure AKS instances
+on:
+  workflow_dispatch:
+    inputs:
+        environment:
+            type: choice
+            description: Environment
+            options:
+            - test
+        terraform_version: 
+            description: 'Terraform Version'
+            required: true
+            default: 1.3.7
+
+env:
+  WORKING-DIRECTORY: ./deployments/kv-secrets-provider
+
+jobs:
+    configure-aks:
+        runs-on: ubuntu-latest
+        environment: ${{ inputs.environment }}
+        permissions:
+            id-token: write
+            contents: read
+            pages: write
+        defaults:
+            run:
+                shell: bash
+                working-directory: ${{ env.WORKING-DIRECTORY }}
+
+        steps:
+        - uses: actions/checkout@v3
+
