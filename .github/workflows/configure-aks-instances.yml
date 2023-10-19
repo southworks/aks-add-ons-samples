@@ -83,7 +83,7 @@ jobs:
             contents: read
             pages: write
         defaults:
-            run:
+          run:
             shell: bash
             working-directory: ${{ env.WORKING-DIRECTORY }}
     
