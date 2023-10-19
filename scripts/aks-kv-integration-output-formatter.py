@@ -76,11 +76,8 @@ def generateKeyVaultSecretsTemplate(template_folder, kv_secrets_names):
 
     return "\n".join(formatted_info)
 
-def generateSecretProviderFiles(tf_output_file_path, template_folder, tenant_id):
-    resource_groups_names, aks_names, aks_identity_client_ids, kv_names, regions, kv_secrets_names = readJsonData(tf_output_file_path)
-
+def generateSecretProviderFiles(tf_output_file_path, template_folder, tenant_id, aks_identity_client_ids, kv_names, regions, kv_secrets_names):
     formatted_secrets = generateKeyVaultSecretsTemplate(template_folder, kv_secrets_names)
-    secret_provider_files = []
 
     template_file_path = os.path.join(template_folder, CONST_SECRET_PROVIDER_TEMPLATE)
     with open(template_file_path, 'r') as file:
@@ -97,13 +94,7 @@ def generateSecretProviderFiles(tf_output_file_path, template_folder, tenant_id)
         with open(new_file_path, 'w') as wFile:
             wFile.write(new_data)
 
-        secret_provider_files.append(new_file_path)
-
-    return secret_provider_files
-
-def integrate_kv_secrets(tf_output_file_path, template_folder):
-    resource_groups_names, aks_names, aks_identity_client_ids, kv_names, regions, kv_secrets_names = readJsonData(tf_output_file_path)
-
+def integrate_kv_secrets(tf_output_file_path, template_folder, resource_groups_names, aks_names, regions):
     for region in regions:
         new_file_path = getNewFilePath(region, template_folder)
 
@@ -122,9 +113,11 @@ def main():
     template_folder = sys.argv[2]
     tenant_id = sys.argv[3]
 
-    file_paths = generateSecretProviderFiles(tf_output_file_path, template_folder, tenant_id)
+    resource_groups_names, aks_names, aks_identity_client_ids, kv_names, regions, kv_secrets_names = readJsonData(tf_output_file_path)
 
-    integrate_kv_secrets(tf_output_file_path, template_folder)
+    generateSecretProviderFiles(tf_output_file_path, template_folder, tenant_id, aks_identity_client_ids, kv_names, regions, kv_secrets_names)
+
+    integrate_kv_secrets(tf_output_file_path, template_folder, resource_groups_names, aks_names, regions)
 
 if __name__=="__main__": 
     main()
