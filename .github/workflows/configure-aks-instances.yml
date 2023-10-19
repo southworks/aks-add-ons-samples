@@ -59,9 +59,9 @@ jobs:
             ARM_USE_OIDC: true
         
         - name: Terraform Init
-          id: show
+          id: output
           run: |
-            terraform show -json > tf.output.json
+            terraform output -json > tf.output.json
           env:
             ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
             ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
