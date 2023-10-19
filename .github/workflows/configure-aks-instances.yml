@@ -122,4 +122,4 @@ jobs:
 
         - name: Run Python script
           run: |
-            py ${{ env.PYTHON-SCRIPT-PATH }} tf.output.json ${{ env.TEMPLATES-DIRECTORY }} ${{ secrets.AZURE_TENANT_ID }}
+            python ${{ env.PYTHON-SCRIPT-PATH }} tf.output.json ${{ env.TEMPLATES-DIRECTORY }} ${{ secrets.AZURE_TENANT_ID }}
