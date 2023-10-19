@@ -103,6 +103,18 @@ jobs:
             tenant-id: ${{ secrets.AZURE_TENANT_ID }}
             subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+        - uses: azure/setup-kubectl@v3
+          with:
+            version: 'v5.0.1'
+
+        - uses: actions/setup-python@v4
+          with:
+            python-version: '3.10' 
+
+        - name: Install Python azure-cli
+          run: |
+            pip install azure-cli
+
         - name: Show OUTPUT json
           run: |
             cat tf.output.json
