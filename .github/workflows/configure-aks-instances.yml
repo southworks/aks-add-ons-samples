@@ -16,7 +16,7 @@ env:
   WORKING-DIRECTORY: ./deployments/kv-secrets-provider
 
 jobs:
-    configure-aks:
+    get-terraform-output:
         runs-on: ubuntu-latest
         environment: ${{ inputs.environment }}
         permissions:
@@ -68,6 +68,41 @@ jobs:
             ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
             ARM_USE_OIDC: true
         
+        - name: Upload tf.output.json artifact
+          uses: actions/upload-artifact@v3
+          with:
+            name: tf.output
+            path: ${{ env.WORKING-DIRECTORY }}/tf.output.json
+
+    configure-aks-instances:
+        runs-on: ubuntu-latest
+        environment: ${{ inputs.environment }}
+        needs: get-terraform-output
+        permissions:
+            id-token: write
+            contents: read
+            pages: write
+        defaults:
+            run:
+            shell: bash
+            working-directory: ${{ env.WORKING-DIRECTORY }}
+    
+        steps:
+        - uses: actions/checkout@v3
+            
+        - name: Download tfplan artifact
+          uses: actions/download-artifact@v3
+          with:
+            name: tf.output
+            path: ${{ env.WORKING-DIRECTORY }}
+    
+        - name: Az CLI login
+          uses: azure/login@v1
+          with:
+            client-id: ${{ secrets.AZURE_CLIENT_ID }}
+            tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+            subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
         - name: Show OUTPUT json
           run: |
             cat tf.output.json
