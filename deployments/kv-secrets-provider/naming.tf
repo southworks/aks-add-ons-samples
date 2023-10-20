@@ -6,7 +6,9 @@ module "naming" {
   location     = each.key
   generator = {
     kvsp = { # keyvault secrets provider
-      resource_group = 1
+      resource_group     = 1
+      kubernetes_cluster = 1
+      key_vault          = 1
     }
   }
 }
